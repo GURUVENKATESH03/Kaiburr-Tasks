@@ -77,38 +77,44 @@ const List = () => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task, taskIndex) => {
-            if (Array.isArray(task.taskExecutions) && task.taskExecutions.length > 0) {
-              return task.taskExecutions.map((execution, execIndex) => (
-                <tr key={`${taskIndex}-${execIndex}`}>
-                  <td>{task.name}</td>
-                  <td>{task.owner}</td>
-                  <td>{task.command}</td>
-                  <td>{execution.startTime}</td>
-                  <td>{execution.endTime}</td>
-                  <td>{execution.output}</td>
-                  <td rowSpan={task.taskExecutions.length}>
-                    <button className="btn btn-sm btn-warning me-1" onClick={() => handleUpdate(task)}>Edit</button>
-                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(task.id)}>Delete</button>
-                  </td>
-                </tr>
-              ));
-            } else {
-              return (
-                <tr key={taskIndex}>
-                  <td>{task.name}</td>
-                  <td>{task.owner}</td>
-                  <td>{task.command}</td>
-                  <td colSpan="3" className="text-center text-muted">No executions found</td>
-                  <td>
-                    <button className="btn btn-sm btn-warning me-1" onClick={() => handleUpdate(task)}>Edit</button>
-                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(task.id)}>Delete</button>
-                  </td>
-                </tr>
-              );
-            }
-          })}
-        </tbody>
+  {tasks.map((task, taskIndex) => {
+    const executions = task.taskExecutions || [];
+    if (executions.length > 0) {
+      return executions.map((execution, execIndex) => (
+        <tr key={`${task.id}-${execIndex}`}>
+          <td>{task.name}</td>
+          <td>{task.owner}</td>
+          <td>{task.command}</td>
+          <td>{execution.startTime}</td>
+          <td>{execution.endTime}</td>
+          <td>{execution.output}</td>
+          <td>
+            {execIndex === 0 && (
+              <>
+                <button className="btn btn-sm btn-warning me-1" onClick={() => handleUpdate(task)}>Edit</button>
+                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(task.id)}>Delete</button>
+              </>
+            )}
+          </td>
+        </tr>
+      ));
+    } else {
+      return (
+        <tr key={task.id}>
+          <td>{task.name}</td>
+          <td>{task.owner}</td>
+          <td>{task.command}</td>
+          <td colSpan="3" className="text-center text-muted">No executions found</td>
+          <td>
+            <button className="btn btn-sm btn-warning me-1" onClick={() => handleUpdate(task)}>Edit</button>
+            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(task.id)}>Delete</button>
+          </td>
+        </tr>
+      );
+    }
+  })}
+</tbody>
+
       </table>
 
       {editingTask.id && (

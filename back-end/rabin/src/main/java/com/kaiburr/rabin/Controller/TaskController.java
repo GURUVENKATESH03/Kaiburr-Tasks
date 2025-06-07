@@ -46,7 +46,8 @@ public class TaskController {
     }
 
     @PostMapping("/enterthetask/{id}/execute")
-    public ResponseEntity<Task> execute(@PathVariable String id) throws IOException {
-        return ResponseEntity.ok(service.executeTask(id));
-    }
+public ResponseEntity<Task> execute(@PathVariable String id, @RequestBody Task task) throws IOException {
+    return ResponseEntity.ok(service.executeTask(id, task));
+}
+
 }

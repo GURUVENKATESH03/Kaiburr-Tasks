@@ -32,21 +32,16 @@ public class TaskService {
         }
     }
 
-    public Task executeTask(String taskId) throws IOException {
-        Task task = repo.findById(taskId).orElseThrow();
-        TaskExecution exec = new TaskExecution();
-        exec.setStartTime(new Date());
+    public Task executeTask(String taskId, Task newtask) throws IOException {
+    Task task = repo.findById(taskId).orElseThrow();
 
-        Process process = Runtime.getRuntime().exec(task.getCommand());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String output = reader.lines().collect(Collectors.joining("\n"));
+    if (!repo.findById(taskId).isEmpty()) {
+        deleteTaskById(taskId);
+    }
 
-        exec.setEndTime(new Date());
-        exec.setOutput(output);
+    return saveTask(newtask);
+}
 
-        task.getTaskExecutions().add(exec);
-        return repo.save(task);
-    } 
 
     public List<Task> getAllTasks() {
         return repo.findAll();
