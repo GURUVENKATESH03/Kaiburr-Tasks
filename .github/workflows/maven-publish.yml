@@ -28,6 +28,7 @@ jobs:
     - name: Build Spring Boot App
       run: |
         cd backend
+        chmod +x mvnw
         ./mvnw clean install -DskipTests
 
     # ===== FRONTEND BUILD =====
