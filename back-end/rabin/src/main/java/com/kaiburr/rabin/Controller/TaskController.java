@@ -35,7 +35,8 @@ public class TaskController {
         return task;
     }
 
-    @PutMapping("/enterthetask")
+    @PostMapping("/entethetask")
+
     public ResponseEntity<Task> putTask(@RequestBody Task task) {
         return ResponseEntity.ok(service.saveTask(task));
     }
@@ -44,10 +45,9 @@ public class TaskController {
     public void deleteTask(@PathVariable String id) {
         service.deleteTaskById(id);
     }
-
-    @PostMapping("/enterthetask/{id}/execute")
-public ResponseEntity<Task> execute(@PathVariable String id, @RequestBody Task task) throws IOException {
-    return ResponseEntity.ok(service.executeTask(id, task));
-}
+    @PutMapping("/{id}/execute")
+    public ResponseEntity<Task> execute(@PathVariable String id, @RequestBody Task task) throws IOException {
+        return ResponseEntity.ok(service.executeTask(id, task));
+    }
 
 }
